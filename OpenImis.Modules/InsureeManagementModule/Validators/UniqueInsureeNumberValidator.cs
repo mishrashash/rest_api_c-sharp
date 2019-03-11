@@ -9,40 +9,37 @@ using System.Threading.Tasks;
 
 namespace OpenImis.Modules.InsureeManagementModule.Validators
 {
-	public class UniqueInsureeNumberValidator
-	{
+    public class UniqueInsureeNumberValidator
+    {
 
-		private readonly IValidator validator;
-		private readonly IInsureeLogic insureeLogic;
+        private readonly IValidator validator;
+        private readonly IInsureeLogic insureeLogic;
 
-		public UniqueInsureeNumberValidator(IInsureeLogic insureeLogic,IValidator validator)
-		{
-			this.validator = validator;
-			this.insureeLogic = insureeLogic;
-		}
+        public UniqueInsureeNumberValidator(IInsureeLogic insureeLogic, IValidator validator)
+        {
+            this.validator = validator;
+            this.insureeLogic = insureeLogic;
+        }
 
-		public async Task ValidateAsync(Object input)
-		{
-			if (validator != null)
-			{
-				validator.Validate(input);
-			}
+        public async Task ValidateAsync(Object input)
+        {
+            validator?.Validate(input);
 
-			string insureeNumber = (string)input;
+            string insureeNumber = (string)input;
 
-			if (insureeNumber.Length == 0)
-			{
-				throw new ValidationException(InsureeErrors.MISSING_INSUREE_NUMBER_ERROR);
-			}
+            if (insureeNumber.Length == 0)
+            {
+                throw new ValidationException(InsureeErrors.MISSING_INSUREE_NUMBER_ERROR);
+            }
 
-			InsureeModel insuree = await this.insureeLogic.GetInsureeByInsureeIdAsync(insureeNumber);
+            InsureeModel insuree = await this.insureeLogic.GetInsureeByInsureeIdAsync(insureeNumber);
 
-			if (insuree != null)
-			{
-				throw new ValidationException(InsureeErrors.INSUREE_NUMBER_EXISTS_ERROR, null, insureeNumber);
-			}
+            if (insuree != null)
+            {
+                throw new ValidationException(InsureeErrors.INSUREE_NUMBER_EXISTS_ERROR, null, insureeNumber);
+            }
 
-		}
+        }
 
-	}
+    }
 }
