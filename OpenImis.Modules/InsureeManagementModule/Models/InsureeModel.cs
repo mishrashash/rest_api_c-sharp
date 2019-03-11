@@ -154,9 +154,7 @@ namespace OpenImis.Modules.InsureeManagementModule.Models
 				IsOffline = this.IsOffline,
 			};
 				
-			if (this.CurrentVillage != null) {
-				tblInsuree.CurrentVillage = this.CurrentVillage.LocationId; // todo: is there any link missing?
-			}
+			tblInsuree.CurrentVillage = this.CurrentVillage?.LocationId; // todo: is there any link missing?
 
 			if (this.Photo != null)
 			{
